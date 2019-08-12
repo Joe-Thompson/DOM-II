@@ -51,71 +51,108 @@ vacationPackage.forEach((i) => {
     i.classList.add("dropzone");
 });
 
-let test = document.querySelector(".img-content img");
-console.log(test);
 
-// let draggableSelector = document.createElement("div");
-// let draggableText = document.createTextNode("Choose your vaction destination");
-// draggableSelector.appendChild(draggableText);
-// draggableSelector.classList.add("dropzone");
-// draggableSelector.style.display = "flex";
-// draggableSelector.style.justifyContent = "center";
-// draggableSelector.style.marginRight = "35px";
-// draggableSelector.draggable = true;
-// draggableText.draggable = true;
-// draggableSelector.ondragstart = "event.dataTransfer.setData('text/plain',null)"; 
-
-
-// let vactionDestinations = document.querySelector('.content-pick');
-// vactionDestinations.insertAdjacentElement("afterend",draggableSelector); 
+//Created new HTML element to drag
+let draggableSelector = document.createElement("p");
+let draggableText = document.createTextNode("I am going here!");
+draggableSelector.appendChild(draggableText);
+draggableSelector.classList.add("dropzone");
+draggableSelector.style.display = "flex";
+draggableSelector.style.justifyContent = "center";
+draggableSelector.style.marginRight = "35px";
+draggableSelector.draggable = true;
+draggableText.draggable = true;
+draggableSelector.ondragstart = "event.dataTransfer.setData('text/plain',null)"; 
 
 
-// /* events fired on the draggable target */
-// document.addEventListener("drag", function(event) {
+let vactionDestinations = document.querySelector('.content-pick');
+vactionDestinations.insertAdjacentElement("afterend",draggableSelector); 
 
-// }, false);
 
-// document.addEventListener("dragstart", function(event) {
-//   // store a ref. on the dragged elem
-//   draggableText = event.target;
-//   // make it half transparent
-//   event.target.style.opacity = .5;
-// }, false);
+document.addEventListener("drag", function(event) {
 
-// document.addEventListener("dragend", function(event) {
-//   // reset the transparency
-//   event.target.style.opacity = "";
-// }, false);
+}, false);
 
-// /* events fired on the drop targets */
-// document.addEventListener("dragover", function(event) {
-//   // prevent default to allow drop
-//   event.preventDefault();
-// }, false);
+document.addEventListener("dragstart", function(event) {
+  draggableText = event.target;
+  event.target.style.opacity = .5;
+}, false);
 
-// document.addEventListener("dragenter", function(event) {
-//   // highlight potential drop target when the draggable element enters it
-//   if (event.target.className == "dropzone") {
-//     event.target.style.background = "purple";
-//   }
+document.addEventListener("dragend", function(event) {
+  event.target.style.opacity = "";
+}, false);
 
-// }, false);
 
-// document.addEventListener("dragleave", function(event) {
-//   // reset background of potential drop target when the draggable element leaves it
-//   if (event.target.className == "dropzone") {
-//     event.target.style.background = "";
-//   }
+document.addEventListener("dragover", function(event) {
+  event.preventDefault();
+}, false);
 
-// }, false);
+document.addEventListener("dragenter", function(event) {
+  if (event.target.className == "btn dropzone") {
+    event.target.style.background = "#17A2B8";
+  }
 
-// document.addEventListener("drop", function(event) {
-//   // prevent default action (open as link for some elements)
-//   event.preventDefault();
-//   // move dragged elem to the selected drop target
-//   if (event.target.className == "dropzone") {
-//     event.target.style.background = "";
-//     draggableText.parentNode.removeChild( draggableText );
-//     event.target.appendChild( draggableText );
-//   }
-// }, false);
+}, false);
+
+document.addEventListener("dragleave", function(event) {
+  if (event.target.className == "dropzone") {
+    event.target.style.background = "#17A2B8";
+    event.target.style.color = "white";
+  }
+
+}, false);
+
+document.addEventListener("drop", function(event) {
+  event.preventDefault();
+
+  if (event.target.className == "btn dropzone") {
+    event.target.style.background = "#17A2B8";
+    draggableText.parentNode.removeChild( draggableText );
+    event.target.appendChild( draggableText );
+  }
+}, false);
+
+//On body load function
+let body = document.querySelector("body");
+body.onload = changeColor();
+
+let nav = document.querySelectorAll(".nav-link");
+let navBar = Array.from(nav);
+navBar[1].style.color = "#17A2B8";
+navBar[3].style.color = "#17A2B8";
+
+var nIntervId;
+ 
+function changeColor() {
+  nIntervId = setInterval(flashText, 500);
+};
+// function flashText() {
+//     for (i = 0; i < navBar.length; i++) {
+//     navBar[i].style.color = navBar[i].style.color == 'black' ? '#17A2B8' : 'black';
+//     };
+// };
+
+function flashText() {
+    for (i = 0; i < navBar.length; i++) {
+        if (i === 0 || i === 2) {
+            navBar[i].style.color = navBar[i].style.color == 'black' ? '#17A2B8' : 'black';
+        }
+        if (i === 1 || i === 3)
+    navBar[i].style.color = navBar[i].style.color == '#17A2B8' ? 'black' : '#17A2B8';
+    };
+};
+
+//Double click imgs in content-section 
+let imgCD = document.querySelectorAll('.content-section img');
+let imgArr = Array.from("imgCD");
+
+
+for (let i = 0; i < imgArr.length; i++) {
+    imgCD[i].addEventListener("dblclick", () => {
+        imgCD[i].style.transform = "scale(1.5)";
+
+        imgCD[i].addEventListener("click", () => {
+            imgCD[i].style.transform = "scale(1)";
+        });
+    });
+}
